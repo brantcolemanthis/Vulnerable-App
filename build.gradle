@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "org.sonarqube" version "4.4.1.3373"
 }
 
 group = 'fr.christophetd.log4shell'
@@ -22,4 +23,18 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+sonar {
+    properties {
+        property "sonar.language", "java"
+        property "sonar.projectKey", System.getenv("SERVICE_SONAR_PROJECT_KEY")
+        property "sonar.projectName", System.getenv("CI_PROJECT_TITLE")
+        property "sonar.qualitygate.wait", true
+        property "sonar.test.inclusions", "src/test/**/*.*"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.java.codeCoveragePlugin","jacoco"
+        property "sonar.junit.reportPaths", "build/reports"
+        property "sonar.sourceEncoding", "UTF-8"
+    }
 }
